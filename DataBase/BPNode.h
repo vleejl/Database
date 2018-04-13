@@ -1,55 +1,61 @@
-#pragma once
-#include <list>
-#include <memory>
+#ifndef BPNODE_H_
+#define BPNODE_H_
+#include "List.h"
+#include "LList.h"
 
-//假设B+树关键字数量和孩子指针数量相同
+template <typename T>
+void helpDeletePtr(T& ptr)
+{
+	if (ptr != nullptr)
+	{
+		delete ptr;
+		ptr = nullptr;
+	}
+}
+
 
 template <typename Key, typename E>
 class BPNode
-{	
+{
 public:
-	class Pair
+	typedef BPNode<Key, E>* PtrBPNode;
+	BPNode() :_parentPtr(nullptr), _ptrKeyList(new LList<Key>()), _ptrChildList(nullptr) {}
+	BPNode(const Key& key, const PtrBPNode& rhs, const PtrBPNode& lhs) :
+		_parentPtr(nullptr)
 	{
-	public:
-		Pair() :_childPtr(nullptr) {}//默认关键字的数据类型会提供数据初始化
-		Pair(const std::shared_ptr<Key>& keyPtr = nullptr, const std::shared_ptr<E>& ptr = nullptr)
-			:_keyPtr(keyPtr), _ptr(ptr) {}
-		Pair(const Pair&);
-		Pair& operator=(const Pair&);
-		Pair(const Pair&&) = delete;
-		Pair& operator=(const Pair&&) = delete;
-		void setValue(const std::shared_ptr<Key> keyPtr);
-		std::shared_ptr<Key> getKey();
-		std::shared_ptr<E> getPtr();
-		~Pair() {}
-	private:
-		void helpCopy(const Pair&);
-	private:
-		std::shared_ptr<Key> _keyPtr;
-		std::shared_ptr<E> _ptr;
-	};
-protected://方便子类调用
-	typedef typename std::list<std::shared_ptr<Pair>> PtrPair;
-	//节点当前的数量就是list中Pair对象的数量
-	PtrPair _ptrPairs;
-	bool _isLeaf;
-	//该节点的最大容量
-	size_t _capacity;
-public:
-	BPNode() :_ptrPairs(new PtrPair()), isLeaf(false), _capacity(0) {}
-	BPNode(const bool& isLeaf, const size_t& capacity = 0) :_ptrPairs(new PtrPair()),
-		_isLeaf(isLeaf), _capacity(capacity) {}//规定：创建节点时需要指定其属性
-	BPNode(const BPNode&);
-	BPNode& operator=(const BPNode&);
-	BPNode(const BPNode&&) = delete;
-	BPNode& operator=(const BPNode&&) = delete;
-	virtual ~BPNode() {}
-	//插入行为永远只在叶子节点发生
-	virtual void insert(const Key& key, const E& ptr) = 0;//在节点内部插入pair，默认调用者会事先调用full函数
-	virtual bool isLeaf() const = 0;//当前节点是否为叶子节点
-	virtual bool isFull() const = 0;//当前节点的记录数量是否为满
-	virtual int numrecs() const = 0;//当前记录的数量
-	//virtual std::shared_ptr<Key> getKeysArray() const {}//返回关键字数组指针
+		_ptrKeyList->apend(key);
+		_ptrChildList->apend(rhs);
+		_ptrChildList->apend(lhs);
+	}
+	virtual void insertKey(const Key&, const int&);
+	virtual void insertChild(const PtrBPNode&, const int&);
+	virtual Key removeKey(const int&);
+	virtual BPNode<Key, E>* removeChild(const int&);
+	virtual int searchKey(const Key&);
+	virtual const List<Key>* getPtrKeyList() const;
+	virtual const List<PtrBPNode>* getPtrChildList() const;
+	virtual ~BPNode();
 private:
-	void helpCopy(const BPNode& bpNode);
+	BPNode* _parentPtr;
+	List<Key>* _ptrKeyList;
+	List<PtrBPNode>* _ptrChildList;
 };
+
+
+#endif // !BPNODE_H_
+
+
+#ifndef BPLEAFNODE_H_
+#define BPLEAFNODE_H_
+
+template <typename Key, typename E>
+class BPLeafNode : public BPNode<Key, E>
+{
+private:
+	bool _isLeaf;
+	BPLeafNode*  _ptrLeft;
+	BPLeafNode*  _ptrRight;
+};
+
+
+#endif // !BPLEAFNODE_H_

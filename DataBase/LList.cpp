@@ -1,6 +1,13 @@
 #include "LList.h"
 
 template<typename E>
+E LList<E>::operator[](const int& pos)
+{
+	moveToPos(pos);
+	return curr->element;
+}
+
+template<typename E>
 void LList<E>::clear()
 {
 	removeAll();
@@ -22,14 +29,14 @@ void LList<E>::insert(const E &ele)
 template <typename E>
 E LList<E>::remove()
 {
-	Assert(curr->next != NULL, "No element");//处理情况1
+	assert(curr->next != NULL);//处理情况1
 	//Assert只能用于debug版本
 	E it = curr->next->element;//看curr的注释
 	if (curr->next == tail)
 	{
 		tail = curr;
 	}
-	Link<E> tempPtr = curr->next;
+	Link<E>* tempPtr = curr->next;
 	curr->next = curr->next->next;
 	delete tempPtr;
 	--cnt;
@@ -53,7 +60,7 @@ void LList<E>::prev()
 {
 	if (curr == head)
 		return;
-	Link<E> tempPtr = head;
+	Link<E>* tempPtr = head;
 	while (tempPtr->next != curr)
 	{
 		tempPtr = tempPtr->next;
@@ -78,7 +85,7 @@ template <typename E>
 int LList<E>::curPos() const
 {
 	int currentPos = 0;
-	Link<E> tempPtr = head;
+	Link<E>* tempPtr = head;
 	while (tempPtr != curr)
 	{
 		++currentPos;
@@ -92,11 +99,11 @@ void LList<E>::moveToPos(int pos)
 	//可以分情况考虑代码实现，如本例
 	//也可直接将curr置为head，一次遍历得到目标位置 
 	assert((pos >= 0) && (pos <= cnt));	
-	int curPos = curPos();
+	int currentPos = curPos();
 	int posCount = 0;
-	if (curPos <= pos)
+	if (currentPos <= pos)
 	{
-		posCount = curPos;
+		posCount = currentPos;
 		while (posCount != pos)
 		{
 			curr = curr->next;
@@ -105,7 +112,7 @@ void LList<E>::moveToPos(int pos)
 	}
 	else
 	{
-		Link<E> tempPtr = head;
+		Link<E>* tempPtr = head;
 		while (posCount != pos)
 		{
 			tempPtr = tempPtr->next;
@@ -126,4 +133,20 @@ void LList<E>::apend(const E& it)
 	tail->next = new Link<E>();
 	tail = tail->next;
 	++cnt;
+}
+
+template <typename E>
+int LList<E>::search(const E& elem) const
+{
+	Link<E>* tempCurr = head;
+	int tempCurPos = 0;
+	while (tempCurr != nullptr)
+	{
+		if (tempCurr->element == elem)
+			return tempCurPos;
+		else
+			tempCurr = tempCurr->next;
+		++tempCurPos;
+	}
+	return -1;
 }

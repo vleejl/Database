@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BPlus.cpp" />
     <ClCompile Include="BPNode.cpp" />
     <ClCompile Include="LList.cpp" />
     <ClCompile Include="main.cpp" />
@@ -27,7 +28,6 @@
     <ClInclude Include="BPlus.h" />
     <ClInclude Include="BPNode.h" />
     <ClInclude Include="BTree.h" />
-    <ClInclude Include="DList.h" />
     <ClInclude Include="Link.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="LList.h" />

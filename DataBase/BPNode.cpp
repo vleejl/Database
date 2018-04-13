@@ -1,88 +1,72 @@
 #include "BPNode.h"
 
 template <typename Key, typename E>
-void BPNode<Key, E>::Pair::helpCopy(const Pair& pair)
+void BPNode<Key, E>::insertKey(const Key& key, const int& pos)
 {
-	this->_keyPtr = pair->_keyPtr;
-	this->_ptr = pair->_ptr;
+	_ptrKeyList->moveToPos(pos);
+	_ptrKeyList->insert(key);
 }
 
 template <typename Key, typename E>
-BPNode<Key, E>::Pair::Pair(const Pair& pair)
+void BPNode<Key, E>::insertChild(const PtrBPNode& childEle, const int& pos)
 {
-	helpCopy(pair);
+	_ptrChildList->moveToPos(pos);
+	_ptrChildList->insert(childEle);
 }
 
 template <typename Key, typename E>
-typename BPNode<Key, E>::Pair& BPNode<Key, E>::Pair::operator=(const Pair& pair)
+Key BPNode<Key, E>::removeKey(const int& pos)
 {
-	helpCopy(pair);
-	return *this;
+	_ptrKeyList->moveToPos(pos);
+	Key key = _ptrKeyList->remove();
+	return key;
+}
+
+template<typename Key, typename E>
+BPNode<Key, E>* BPNode<Key, E>::removeChild(const int& pos)//typedef要求类型明确，但是这里类型并不明确
+{
+	_ptrChildList->moveToPos(pos);
+	BPNode<Key, E>* ptrBPNode = _ptrChildList->remove();
+	return ptrBPNode;
 }
 
 template <typename Key, typename E>
-void BPNode<Key, E>::Pair::setValue(const std::shared_ptr<Key> keyPtr)
+int BPNode<Key, E>::searchKey(const Key& key)
 {
-	this->_keyPtr = keyPtr;
+	int size = _ptrKeyList->length();
+	int i = 0;
+	for (; i != size; ++i)
+	{
+		if (key <= _ptrKeyList[i])
+		{
+			return (i - 1);
+		}
+	}
+	return (i - 1);
 }
 
 template <typename Key, typename E>
-std::shared_ptr<Key> BPNode<Key, E>::Pair::getKey()
+const List<Key>* BPNode<Key, E>::getPtrKeyList() const
 {
-	return _keyPtr;
+	return _ptrKeyList;
 }
 
 template <typename Key, typename E>
-std::shared_ptr<E> BPNode<Key, E>::Pair::getPtr()
+const List<BPNode<Key, E>::PtrBPNode>* BPNode<Key, E>::getPtrChildList() const
 {
-	return _ptr;
+	return _ptrChildList;
 }
 
 template <typename Key, typename E>
-void BPNode<Key, E>::helpCopy(const BPNode& bpNode)
+BPNode<Key, E>::~BPNode()
 {
-	this->_ptrPairs = bpNode->_ptrPairs;
-	this->isLeaf = bpNode->isLeaf;
-	this->_capacity = bpNode->_capacity;
-}
-
-template <typename Key, typename E>
-BPNode<Key, E>::BPNode(const BPNode& bpNode)
-{
-	helpCopy(bpNode);
-}
-
-template <typename Key, typename E>
-BPNode<Key, E>& BPNode<Key, E>::operator=(const BPNode& bpNode)
-{
-	helpCopy(bpNode);
-	return *this;
-}
-
-/*
-template <typename Key, typename E>
-void BPNode<Key, E>::insert(const Key& key, const E& ptr)
-{
-	auto ptrKey = std::make_shared<Key>(key);
-	auto ptrValue = std::make_shared<E>(elem);
-	auto ptrPair = std::make_shared<Pair>();
-}
-*/
-
-template <typename Key, typename E>
-bool BPNode<Key, E>::isLeaf() const
-{
-	return this->_isLeaf;
-}
-
-template <typename Key, typename E>
-bool BPNode<Key, E>::isFull() const
-{
-	return _capacity == _ptrPairs.size();
-}
-
-template <typename Key, typename E>
-int BPNode<Key, E>::numrecs() const
-{
-	return _ptrPairs.size();
+	helpDeletePtr(_parentPtr);
+	helpDeletePtr(_ptrKeyList);
+	int sizeChildList = _ptrChildList->length();
+	for (int i = 0; i != sizeChildList; ++i)//删除孩子节点所指的内存
+	{
+		if (_ptrChildList[i] != nullptr)
+			helpDeletePtr(_ptrChildList[i]);
+	}	
+	helpDeletePtr(_ptrChildList);
 }

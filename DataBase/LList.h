@@ -9,9 +9,12 @@ class LList : public List<E>
 {
 public:
 	LList() { init(); }
+	LList(const LList&) = delete;
 	~LList() { removeAll(); }
+	E operator[](const int&);
 	void clear();
 	void insert(const E&);
+	void apend(const E&);
 	E remove();
 	void moveToStart();
 	void moveToEnd();
@@ -20,8 +23,8 @@ public:
 	int length() const;
 	int curPos() const;
 	void moveToPos(int pos);
-	const E& getValue() const;
-	void apend(const E&);
+	const E& getValue() const;	
+	int search(const E&) const;
 private:
 	Link<E> *head;
 	Link<E> *tail;

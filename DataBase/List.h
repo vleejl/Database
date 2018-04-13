@@ -6,6 +6,7 @@ class List
 {
 public:
 	List() {}
+	virtual Elem operator[](const int&) = 0;
 	virtual ~List() {}
 	virtual void clear() = 0;
 	virtual void insert(const Elem&) = 0;
@@ -19,6 +20,7 @@ public:
 	virtual int curPos() const = 0;
 	virtual void moveToPos(int pos) = 0;
 	virtual const Elem& getValue() const = 0;
+	virtual int search(const Elem&) const = 0;
 private:
 	//void operate=(const List&) {}
 	List(const List&) {}

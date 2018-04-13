@@ -1,37 +1,29 @@
-#pragma once
-#include "BTree.h"
+#ifndef BPLUS_H_
+#define BPLUS_H_
+
 #include "BPNode.h"
+#include "BTree.h"
 
 template <typename Key, typename E>
 class BPlus : BTree<Key, E>
 {
 public:
+	BPlus(): _capacity(0), _rootPtr(new BPNode<Key, E>()), _currentPtr(_rootPtr) {}
+	BPlus(const size_t& capacity) : 
+		_capacity(capacity), _rootPtr(new BPNode<Key, E>()), _currentPtr(_rootPtr) {}
+
+	BPlus(const BPlus&) = delete;
+	BPlus& operator=(const BPlus&) = delete;
+
 	std::shared_ptr<E> search(const Key&);
 	void insert(const Key&, const std::shared_ptr<E>);
 	void remove(const Key& key);
-public:
-	class BPRootNode : public BPNode<Key, E>
-	{
-	public:
-		BPRootNode() : BPNode<Key, E>(false, _capacity) {}
-	};
-
-	class BPNormalNode : public BPNode<Key, E>
-	{
-	public:
-		BPRootNode() : BPNode<Key, E>(false, _capacity) {}
-	};
-
-	class BPLeafNode : public BPNode<Key, E>
-	{
-	typedef std::shared_ptr<BPNode<Key, E>> LinkPtr;
-
-	public:
-		BPRootNode() : BPNode<Key, E>(true, _capacity) {}
-	private:
-		LinkPtr _leftPtr;
-		LinkPtr _rightPtr;
-	};
+	~BPlus();
 private:
-	size_t _capacity;//节点的最大数量
+	size_t _capacity;//节点的最大数量,一定是第一个被初始化
+	typedef typename std::shared_ptr<BPNode<Key, E>> Ptr;
+	BPNode<Key, E>* _rootPtr;
+	Ptr _currentPtr;
 };
+
+#endif // !BPLUS_H_

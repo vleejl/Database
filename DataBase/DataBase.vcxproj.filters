@@ -21,10 +21,13 @@
     <ClCompile Include="BPNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LList.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="BPlus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,9 +39,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BTree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DList.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Link.h">
