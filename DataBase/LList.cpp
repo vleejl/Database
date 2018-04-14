@@ -1,7 +1,7 @@
 #include "LList.h"
 
 template<typename E>
-E LList<E>::operator[](const int& pos)
+E& LList<E>::operator[](int pos)
 {
 	moveToPos(pos);
 	return curr->element;

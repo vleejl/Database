@@ -30,6 +30,9 @@
     <ClCompile Include="LList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BPLeafNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BPlus.h">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="LList.h">
       <Filter>头文件\List</Filter>
+    </ClInclude>
+    <ClInclude Include="BPLeafNode.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,8 +19,8 @@ public:
 	BTree& operator = (const BTree&&) = delete;
 
 	virtual std::shared_ptr<E> search(const Key&) = 0;
-	virtual void insert(const Key&, const std::shared_ptr<E>) = 0;
-	virtual void remove(const Key& key) = 0;
+	virtual void insert(Key&, E*) = 0;
+	virtual std::shared_ptr<E> remove(const Key& key) = 0;
 };
 
 #endif // !BTREE_H_

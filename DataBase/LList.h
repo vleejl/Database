@@ -11,7 +11,7 @@ public:
 	LList() { init(); }
 	LList(const LList&) = delete;
 	~LList() { removeAll(); }
-	E operator[](const int&);
+	E& operator[](int);
 	void clear();
 	void insert(const E&);
 	void apend(const E&);

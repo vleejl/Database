@@ -1,12 +1,16 @@
 #include <iostream>
+#include "BPNode.h"
+#include "BPNode.cpp"
+#include "BPLeafNode.h"
+#include "BPLeafNode.cpp"
 #include "BPlus.h"
 #include "BPlus.cpp"
+#include "LList.cpp"
 using namespace std;
 
 int main()
 {
-	BPlus<int, int>* ptr = new BPlus<int, int>();
-	ptr->search(10);
+	BPNode<int, int> *ptr = new BPNormalNode<int, int>();
 	delete ptr;
 	std::cout << std::endl;
 	system("pause");

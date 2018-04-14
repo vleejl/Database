@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BPLeafNode.cpp" />
     <ClCompile Include="BPlus.cpp" />
     <ClCompile Include="BPNode.cpp" />
     <ClCompile Include="LList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BPLeafNode.h" />
     <ClInclude Include="BPlus.h" />
     <ClInclude Include="BPNode.h" />
     <ClInclude Include="BTree.h" />

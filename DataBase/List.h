@@ -6,7 +6,7 @@ class List
 {
 public:
 	List() {}
-	virtual Elem operator[](const int&) = 0;
+	virtual Elem& operator[](int) = 0;
 	virtual ~List() {}
 	virtual void clear() = 0;
 	virtual void insert(const Elem&) = 0;
